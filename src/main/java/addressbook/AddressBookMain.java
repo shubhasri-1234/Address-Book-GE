@@ -23,17 +23,17 @@ public class AddressBookMain {
 
             switch (choice) {
                 case 1:
-                    addressBook.addContact();
+                    addressBook.addContact(scanner);
                     break;
                 case 2:
                     System.out.print("Enter the first name of the contact to edit: ");
                     String firstNameToEdit = scanner.nextLine();
-                    addressBook.editContact(firstNameToEdit);
+                    addressBook.editContact(firstNameToEdit,scanner);
                     break;
                 case 3:
                     System.out.print("Enter the first name of the contact to delete: ");
                     String firstNameToDelete = scanner.nextLine();
-                    addressBook.deleteContact(firstNameToDelete);
+                    addressBook.deleteContact(firstNameToDelete,scanner);
                     break;
                 case 4:
                     addressBook.displayContacts();
@@ -41,11 +41,11 @@ public class AddressBookMain {
                 case 5:
                     System.out.println("Exiting the Address Book. Goodbye!");
                     System.exit(0);
+                    scanner.close();
                     break;
                 default:
                     System.out.println("Invalid choice. Please enter a valid option.");
             }
-            scanner.close();
         }
         
     }
@@ -140,7 +140,7 @@ class ContactPerson {
         this.email = email;
     }
 
-    @Override
+@Override
     public String toString() {
         return "Name: " + firstName + " " + lastName +
                "\nAddress: " + address +
@@ -156,8 +156,7 @@ class ContactPerson {
 class AddressBook {
     private ArrayList<ContactPerson> contacts = new ArrayList<>();
 
-    public void addContact() {
-        Scanner scanner = new Scanner(System.in);
+    public void addContact(Scanner scanner) {
 
         System.out.print("Enter first name: ");
         String firstName = scanner.nextLine();
@@ -181,46 +180,68 @@ class AddressBook {
 
         contacts.add(newContact);
         System.out.println("Contact added successfully!");
-        scanner.close();
     }
 
-    public void editContact(String firstNameToEdit) {
-        for (ContactPerson contact : contacts) {
-            if (contact.getFirstName().equalsIgnoreCase(firstNameToEdit)) {
-                Scanner scanner = new Scanner(System.in);
+public void editContact(String firstNameToEdit, Scanner scanner) {
+    for (ContactPerson contact : contacts) {
+        if (contact.getFirstName().equalsIgnoreCase(firstNameToEdit)) {
 
-                System.out.print("Enter new address: ");
-                String newAddress = scanner.nextLine();
-                System.out.print("Enter new city: ");
-                String newCity = scanner.nextLine();
-                System.out.print("Enter new state: ");
-                String newState = scanner.nextLine();
-                System.out.print("Enter new ZIP: ");
-                String newZip = scanner.nextLine();
-                System.out.print("Enter new phone number: ");
-                String newPhoneNumber = scanner.nextLine();
-                System.out.print("Enter new email: ");
-                String newEmail = scanner.nextLine();
+            System.out.println("1. Edit Address");
+            System.out.println("2. Edit City");
+            System.out.println("3. Edit State");
+            System.out.println("4. Edit ZIP");
+            System.out.println("5. Edit Phone number");
+            System.out.println("6. Edit Email");
 
-                // Update the contact details
-                contact.setAddress(newAddress);
-                contact.setCity(newCity);
-                contact.setState(newState);
-                contact.setZip(newZip);
-                contact.setPhoneNumber(newPhoneNumber);
-                contact.setEmail(newEmail);
-
-                System.out.println("Contact updated successfully!");
-                scanner.close();
-                return;
-
+            System.out.print("Enter your choice: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+            
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter new address: ");
+                    String newAddress = scanner.nextLine();
+                    contact.setAddress(newAddress);
+                    break;
+                case 2:
+                    System.out.print("Enter new city: ");
+                    String newCity = scanner.nextLine();
+                    contact.setCity(newCity);
+                    break;
+                case 3:
+                    System.out.print("Enter new state: ");
+                    String newState = scanner.nextLine();
+                    contact.setState(newState);
+                    break;
+                case 4:
+                    System.out.print("Enter new ZIP: ");
+                    String newZip = scanner.nextLine();
+                    contact.setZip(newZip);
+                    break;
+                case 5:
+                    System.out.print("Enter new phone number: ");
+                    String newPhoneNumber = scanner.nextLine();
+                    contact.setPhoneNumber(newPhoneNumber);
+                    break;
+                case 6:
+                    System.out.print("Enter new email: ");
+                    String newEmail = scanner.nextLine();
+                    contact.setEmail(newEmail);
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please enter a valid option.");
             }
-        }
 
-        System.out.println("Contact not found.");
+            System.out.println("Contact updated successfully!");
+            return;
+        }
     }
 
-    public void deleteContact(String firstNameToDelete) {
+    System.out.println("Contact not found.");
+}
+
+
+    public void deleteContact(String firstNameToDelete,Scanner scanner) {
         for (ContactPerson contact : contacts) {
             if (contact.getFirstName().equalsIgnoreCase(firstNameToDelete)) {
                 contacts.remove(contact);
